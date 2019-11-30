@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "fa40a5c5-31fe-4207-ab29-005576104c67",
+		"name": "camunda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create deployment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "upload",
+							"type": "file",
+							"src": "/home/linux/Desktop/works/Camunda/process/watchMunster.bpmn"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{loc}}:{{port}}/engine-rest/deployment/create",
+					"protocol": "http",
+					"host": [
+						"{{loc}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"engine-rest",
+						"deployment",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Starting a process instance at its default initial activity",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "http://{{loc}}:{{port}}/engine-rest/process-definition/key/WatchMunster/start",
+					"protocol": "http",
+					"host": [
+						"{{loc}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"engine-rest",
+						"process-definition",
+						"key",
+						"WatchMunster",
+						"start"
+					]
+				},
+				"description": "get task info"
+			},
+			"response": []
+		},
+		{
+			"name": "list of all active tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{loc}}:{{port}}/engine-rest/task",
+					"protocol": "http",
+					"host": [
+						"{{loc}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"engine-rest",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single result of task",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{loc}}:{{port}}/engine-rest/task?processDefinitionKey=WatchMunster",
+					"protocol": "http",
+					"host": [
+						"{{loc}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"engine-rest",
+						"task"
+					],
+					"query": [
+						{
+							"key": "processDefinitionKey",
+							"value": "WatchMunster"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send variables to task to comeplete",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"variables\":\n    {\n    \t\"teamName\": {\"value\": \"Preussen Munster\"}\n    }\n}"
+				},
+				"url": {
+					"raw": "http://{{loc}}:{{port}}/engine-rest/task/60461e4a-1379-11ea-a3a1-0022439bcf27/complete",
+					"protocol": "http",
+					"host": [
+						"{{loc}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"engine-rest",
+						"task",
+						"60461e4a-1379-11ea-a3a1-0022439bcf27",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
