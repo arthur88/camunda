@@ -21,12 +21,14 @@ export default class Process extends React.Component {
 
 	componentDidMount() {
 
-		/*axios.post("http://127.0.0.1:8080/engine-rest/process-definition/key/"+ this.state.processName + "/start",'{}', 
+		const proxyurl = "https://cors-anywhere.herokuapp.com/";
+		axios.post("http://localhost:8080/engine-rest/process-definition/key/WatchMunster/start",'{}', 
 		{
 			"headers": {
 				"Content-Type": "application/json",
+				"Accept": "*/*",
 				"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-				"Access-Control-Allow-Origin": "http://localhost:8080"
+				"Access-Control-Allow-Origin": "*"
 			},
 			crossdomain: true
 		})
@@ -37,10 +39,10 @@ export default class Process extends React.Component {
 		.catch(function(error){
 
 			console.log(error);
-		}) */
+		}) 
 
 		
-		fetch("http://localhost:8080/engine-rest/process-definition/key/"+ this.state.processName + "/start", 
+		/*fetch("http://localhost:8080/engine-rest/process-definition/key/"+ this.state.processName + "/start", 
 			{
 				method: 'POST',
 				headers: {
@@ -60,7 +62,7 @@ export default class Process extends React.Component {
 				loading: false,
 				mapdata
 			})
-		})
+		})  */
 	}
 
 
