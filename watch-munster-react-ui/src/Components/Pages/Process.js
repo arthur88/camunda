@@ -4,6 +4,9 @@ import axios from "axios";
 import LoadObj from "../Tools/Loading";
 import rError from "../Tools/ErrorShow";
 
+
+
+
 export default class Process extends React.Component {
 
 	constructor(props) {
@@ -21,7 +24,6 @@ export default class Process extends React.Component {
 
 	componentDidMount() {
 
-		const proxyurl = "https://cors-anywhere.herokuapp.com/";
 		axios.post("http://localhost:8080/engine-rest/process-definition/key/WatchMunster/start",'{}', 
 		{
 			"headers": {
@@ -32,37 +34,20 @@ export default class Process extends React.Component {
 			},
 			crossdomain: true
 		})
-		.then(function(response){
-
+		.then((response) => {
 			console.log(response);
-		})
-		.catch(function(error){
-
-			console.log(error);
-		}) 
-
-		
-		/*fetch("http://localhost:8080/engine-rest/process-definition/key/"+ this.state.processName + "/start", 
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin' : '',
-      'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-      'Access-Control-Allow-Credentials':true,
-
-				},
-				crossorigin:true,
-				body: JSON.stringify({})
-			}
-		)
-		.then(response => response.json())
-		.then(mapdata => {
 			this.setState({
-				loading: false,
-				mapdata
-			})
-		})  */
+				mapdata: response,
+				loading: false
+            })
+		})
+		.catch((error) => {
+			this.setState({
+				mapdata: null,
+				error: error,
+				loading: false
+            })
+		})
 	}
 
 
@@ -72,24 +57,27 @@ export default class Process extends React.Component {
 
 	rError() {
 		return <rError error={this.state.error.message} />
-
 	}
+
+
 
 	show() {
 
 		const { error, mapdata } = this.state;
+		var mdata = Object.keys(mapdata).map(con => Object.keys(mapdata));
 
 		if(error) {
 
 			return this.error();
 		}
 
+		console.log(mdata);
 		return (
-
 			<div>
-
+			{}
 			</div>
 		)
+	
 	}
 
 
@@ -100,15 +88,12 @@ export default class Process extends React.Component {
 			return this.loading();
 		} else if(this.state.error) {
 
-			return this.rError();
+			//return this.rError();
 		} else {
 
-			this.show();
+			return this.show();
 		}
 
-		return(
 
-			<section id="process">Process</section>
-		)
 	}
 }
