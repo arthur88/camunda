@@ -9,6 +9,20 @@ import rError from "../Tools/ErrorShow";
 
 export default class Process extends React.Component {
 
+	async postData() {
+        const res = await axios.post("http://localhost:8080/engine-rest/process-definition/key/WatchMunster/start",'{}', 
+		{
+			"headers": {
+				"Content-Type": "application/json",
+				"Accept": "*/*",
+				"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+				"Access-Control-Allow-Origin": "*"
+			},
+			crossdomain: true
+		});
+        return await res;
+	}
+	
 	constructor(props) {
 
 		super(props);
@@ -24,30 +38,23 @@ export default class Process extends React.Component {
 
 	componentDidMount() {
 
-		axios.post("http://localhost:8080/engine-rest/process-definition/key/WatchMunster/start",'{}', 
-		{
-			"headers": {
-				"Content-Type": "application/json",
-				"Accept": "*/*",
-				"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-				"Access-Control-Allow-Origin": "*"
-			},
-			crossdomain: true
-		})
-		.then((response) => {
-			console.log(response);
-			this.setState({
-				mapdata: response,
-				loading: false
-            })
-		})
-		.catch((error) => {
-			this.setState({
-				mapdata: null,
-				error: error,
-				loading: false
-            })
-		})
+		this.setState({ loading: true })
+
+		this.postData()
+			.then(
+				data => this.setState({
+					mapdata: data.data,
+					loading: false
+				}))
+				.catch(err => { 
+					this.setState({
+						mapdata: null,
+						error: err,
+						loading: false
+					})
+				});
+						  
+
 	}
 
 
@@ -62,23 +69,72 @@ export default class Process extends React.Component {
 
 
 	show() {
-
+	
 		const { error, mapdata } = this.state;
-		var mdata = Object.keys(mapdata).map(con => Object.keys(mapdata));
 
 		if(error) {
 
 			return this.error();
 		}
+		console.log('-------------------');
+		console.log(mapdata);
 
-		console.log(mdata);
+		if(mapdata.links) {
+
+			const listItems = mapdata.links[0];
+			console.log(listItems);
+		}
+		
 		return (
 			<div>
-			{}
+				<div className="start-process col-12 col-sm-6">
+					<table className="table table-striped table-hover">
+					<tbody>
+					<tr>
+						<td>ID</td>
+						<td> {mapdata.id} </td>
+					</tr>
+					<tr>
+						<td>Definition ID</td>
+						<td> {mapdata.definitionId} </td>
+					</tr>
+					<tr>
+						<td>Business key</td>
+						<td> {mapdata.businessKey} </td>
+					</tr>	
+					<tr>
+						<td>Case Instance ID</td>
+						<td> {mapdata.caseInstanceId} </td>
+					</tr>	
+					<tr>
+						<td>Is ended</td>
+						<td> {mapdata.ended === false ? "Not yet" : mapdata.ended} </td>
+					</tr>		
+					<tr>
+						<td>Is Suspended</td>
+						<td> {mapdata.suspended === false ? "Not yet" : mapdata.suspended} </td>
+					</tr>	
+					<tr>
+						<td>Team ID</td>
+						<td> {mapdata.tenantId} </td>
+					</tr>		
+					<tr>
+						<td>Links</td>
+						<td>
+
+							<ul>
+					
+							</ul>
+						</td>
+					</tr>		
+					</tbody>	
+					</table>																													
+				</div>
+			
 			</div>
 		)
 	
-	}
+	}  
 
 
 	render() {
